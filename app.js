@@ -4,7 +4,7 @@
   - Google Apps Script: stockage scores + leaderboard + email
 */
 
-const API_BASE = "PASTE_YOUR_APPS_SCRIPT_WEB_APP_URL_HERE"; // ex: https://script.google.com/macros/s/XXXX/exec
+const API_BASE = "https://script.google.com/macros/s/AKfycbxWjy8oOzEXFLTBjXyHRojUMhqCpV87WatA100GVx0/dev"; // ex: https://script.google.com/macros/s/XXXX/exec
 
 // ---------- Quiz data ----------
 /*
