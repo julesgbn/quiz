@@ -363,32 +363,40 @@ function resetAll(){
   show(screenStart);
 }
 
-async function apiGet(path){
-  const url = `${API_BASE}?path=${encodeURIComponent(path)}`;
-  const res = await fetch(url, { method: "GET" });
-  const json = await res.json();
+async function apiGet(action, params = {}) {
+  const url = new URL(API_BASE);
+  url.searchParams.set("action", action);
+  Object.entries(params).forEach(([k, v]) =>
+    url.searchParams.set(k, v)
+  );
+
+  const res = await fetch(url.toString(), {
+    method: "GET",
+    cache: "no-store"
+  });
+
   if (!res.ok) {
-    const msg = json && json.error ? json.error : "Erreur API";
-    throw new Error(msg);
+    throw new Error(`HTTP ${res.status}`);
   }
-  return json;
+
+  return await res.json();
 }
 
-async function apiPost(path, payload){
+
+async function apiPost(action, payload = {}) {
   const res = await fetch(API_BASE, {
     method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ path, ...payload })
+    headers: { "Content-Type": "text/plain;charset=utf-8" },
+    body: JSON.stringify({ action, ...payload })
   });
-  const json = await res.json().catch(() => ({}));
+
   if (!res.ok) {
-    const msg = json && json.error ? json.error : `Erreur API (${res.status})`;
-    const err = new Error(msg);
-    err.status = res.status;
-    throw err;
+    throw new Error(`HTTP ${res.status}`);
   }
-  return json;
+
+  return await res.json();
 }
+
 
 function renderLeaderboard(entries){
   leaderboardEl.innerHTML = "";
