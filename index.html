@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Quiz à tiroirs</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <main class="app" id="app">
+    <header class="topbar">
+      <div class="brand">Quiz à tiroirs</div>
+      <div class="meta">
+        <div id="progress" class="pill" aria-live="polite"></div>
+        <div id="score" class="pill" aria-live="polite"></div>
+      </div>
+    </header>
+
+    <section class="card" id="screen-start">
+      <h1>Avant de commencer</h1>
+      <p class="muted">Entre ton prénom, puis appuie sur <b>Commencer</b>.</p>
+
+      <label class="label" for="nameInput">Prénom</label>
+      <input id="nameInput" class="input" inputmode="text" autocomplete="given-name" placeholder="Ex : Jules" maxlength="24" />
+      <div class="row">
+        <button id="btnStart" class="btn primary">Commencer</button>
+      </div>
+
+      <p id="startError" class="error" role="alert" aria-live="polite"></p>
+
+      <details class="details">
+        <summary>Règles</summary>
+        <ul>
+          <li>Tu vois une question à la fois.</li>
+          <li>Si c’est <b>bon</b>, tu débloques la sous-question suivante (tiroir).</li>
+          <li>Si c’est <b>faux</b>, on passe au bloc suivant.</li>
+        </ul>
+      </details>
+    </section>
+
+    <section class="card hidden" id="screen-quiz" aria-live="polite">
+      <div class="kicker" id="kicker"></div>
+      <h2 id="questionText"></h2>
+      <div class="sub" id="questionPoints"></div>
+
+      <div class="controls">
+        <button id="btnWrong" class="btn danger">Mauvaise réponse</button>
+        <button id="btnRight" class="btn success">Bonne réponse</button>
+      </div>
+
+      <div class="row space-between">
+        <button id="btnUndo" class="btn ghost">Annuler</button>
+        <button id="btnQuit" class="btn ghost">Quitter</button>
+      </div>
+
+      <p class="muted small">Astuce : tu peux utiliser <b>Annuler</b> si tu as cliqué trop vite.</p>
+    </section>
+
+    <section class="card hidden" id="screen-end">
+      <h1>Terminé 🎉</h1>
+      <p class="big">Score : <span id="finalScore"></span></p>
+
+      <div class="divider"></div>
+
+      <h3>Classement</h3>
+      <p class="muted small" id="leaderboardStatus"></p>
+      <ol id="leaderboard" class="leaderboard"></ol>
+
+      <div class="row">
+        <button id="btnRestart" class="btn primary">Rejouer</button>
+      </div>
+      <p class="muted small">Le classement est partagé entre tous les joueurs.</p>
+    </section>
+
+    <footer class="footer muted small">
+      <span>Mobile-first · GitHub Pages + Google Apps Script</span>
+    </footer>
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>
