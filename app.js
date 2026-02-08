@@ -17,7 +17,7 @@ const API_BASE = "https://script.google.com/macros/s/AKfycbzRw1k6xApUf0AmXz6ac34
 const BLOCKS = [
   { id: 1, items: [
     { level: 0, label: "1)", points: 1, text: "Comment s’appelle la plus grand Pyramide d’Egypte ?" },
-    { level: 1, label: "a)", points: 3, text: "À cinq cents près, en quelle année fut elle construite ?" },
+    { level: 1, label: "a)", points: 3, text: "À cinq cents ans près, en quelle année fut elle construite ?" },
     { level: 2, label: "i.", points: 4, text: "Quelles sont les 6 autres merveilles antiques ?" },
     { level: 3, label: "–", points: 5, text: "Quel pharaon a construit la seconde plus grande pyramide d’Egypte ? (Indice : c’est aussi le nom de la Pyramide)" },
   ]},
