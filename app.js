@@ -233,6 +233,7 @@ let score = 0;
 let blockIndex = 0;  // 0..TOTAL_BLOCKS
 let levelIndex = 0;  // 0..3
 let startedAt = null;
+let questionStats = {};
 
 // history stack for undo: {prevBlockIndex, prevLevelIndex, prevScore, action}
 let history = [];
@@ -278,6 +279,23 @@ function renderQuestion(){
   kickerEl.textContent = `Bloc ${blockNo} · ${levelHuman(item.label)}`;
   questionTextEl.textContent = item.text;
   questionPointsEl.textContent = `${item.points} point${item.points > 1 ? "s" : ""}`;
+
+  const questionId = `b${blockIndex + 1}-l${levelIndex}`;
+  const stat = questionStats[questionId];
+
+  let statEl = document.getElementById("questionStats");
+  if (!statEl) {
+    statEl = document.createElement("div");
+    statEl.id = "questionStats";
+    statEl.className = "question-stats";
+    questionPointsEl.insertAdjacentElement("afterend", statEl);
+  }
+
+  if (stat && stat.attempts > 0) {
+    statEl.textContent = `Réussite : ${stat.rate}% (${stat.success}/${stat.attempts})`;
+  } else {
+    statEl.textContent = "Réussite : pas encore de données";
+  }
 
   btnUndo.disabled = history.length === 0;
 
@@ -402,6 +420,17 @@ async function apiGet(action, params = {}) {
 }
 
 
+async function loadQuestionStats(){
+  try {
+    const data = await apiGet("questionStats");
+    questionStats = data.entries || {};
+  } catch (e) {
+    console.warn("Stats questions indisponibles", e);
+    questionStats = {};
+  }
+}
+
+
 async function apiPost(action, payload = {}) {
   const res = await fetch(API_BASE, {
     method: "POST",
@@ -476,6 +505,7 @@ async function start(){
   history = [];
 
   show(screenQuiz);
+  await loadQuestionStats();
   renderQuestion();
 }
 
