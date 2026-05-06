@@ -286,7 +286,16 @@ function renderQuestion(){
 
 function goNextOnCorrect(){
   const item = currentItem();
-  const prev = { prevBlockIndex: blockIndex, prevLevelIndex: levelIndex, prevScore: score, action: "right" };
+  const prev = {
+    prevBlockIndex: blockIndex,
+    prevLevelIndex: levelIndex,
+    prevScore: score,
+    action: "right",
+    questionId: `b${blockIndex + 1}-l${levelIndex}`,
+    blockId: blockIndex + 1,
+    level: levelIndex,
+    points: item.points
+  };
 
   score += item.points;
 
@@ -308,7 +317,17 @@ function goNextOnCorrect(){
 }
 
 function goNextOnWrong(){
-  const prev = { prevBlockIndex: blockIndex, prevLevelIndex: levelIndex, prevScore: score, action: "wrong" };
+  const item = currentItem();
+  const prev = {
+    prevBlockIndex: blockIndex,
+    prevLevelIndex: levelIndex,
+    prevScore: score,
+    action: "wrong",
+    questionId: `b${blockIndex + 1}-l${levelIndex}`,
+    blockId: blockIndex + 1,
+    level: levelIndex,
+    points: item.points
+  };
 
   // wrong => skip remainder of block
   blockIndex += 1;
@@ -475,9 +494,16 @@ async function finishQuiz(){
     // optional: minimal details for auditing/analytics
     details: {
       blocks: TOTAL_BLOCKS,
-      actions: history.map(h => h.action), // coarse; you can enrich later
-      userAgent: navigator.userAgent
-    }
+      actions: history.map(h => h.action),
+      answers: history.map(h => ({
+        questionId: h.questionId,
+        blockId: h.blockId,
+        level: h.level,
+        points: h.points,
+        correct: h.action === "right"
+      })),
+  userAgent: navigator.userAgent
+}
   };
 
   try{
